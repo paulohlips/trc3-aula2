@@ -20,10 +20,6 @@ const UserSchema = new mongoose.Schema(
       type: Number,
       required: false,
     },
-    cpf: {
-      type: Number,
-      required: true,
-    },
   },
   {
     versionKey: false,

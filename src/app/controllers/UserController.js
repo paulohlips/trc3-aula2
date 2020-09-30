@@ -14,7 +14,7 @@ class UserController {
   }
 
   async store(req, res) {
-    const { name, email, cpf } = req.body;
+    const { name, email } = req.body;
 
     if (!(name && email)) {
       return res
@@ -29,6 +29,38 @@ class UserController {
     } catch (error) {
       return res.status(500).json({ message: `Erro no servidor! ${error}` });
     }
+  }
+
+  async update(req, res) {
+    const { id } = req.params;
+
+    const userToUpdate = await User.findOne({
+      id: id,
+    });
+
+    if (!userToUpdate) {
+      return res
+        .status(422)
+        .json({ message: "Usuário não existe, ID inválido" });
+    }
+
+    await User.update(req.body);
+
+    return res.status(200).json({ message: "Usuário atualizado com sucesso!" });
+  }
+
+  async delete(req, res) {
+    const userToDelete = await User.findOne({ id: req.params.id });
+
+    if (!userToDelete) {
+      return res
+        .status(422)
+        .json({ message: "Usuário não existe, ID inválido" });
+    }
+
+    await User.deleteOne({ id: req.params.id });
+
+    return res.json({ message: "Usuário foi excluído!" });
   }
 }
 
